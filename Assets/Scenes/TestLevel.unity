@@ -374,10 +374,11 @@ MonoBehaviour:
   bgTilePrefab: {fileID: 2637683708406156747, guid: bfd354fe0fec1034b936ff7b04c8e28c, type: 3}
   gems:
   - {fileID: 8294442726319950938, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
-  - {fileID: -6682552758918147550, guid: de9e54833f4ab0744b62d89a6ff6ec55, type: 3}
-  - {fileID: -4661122845867721297, guid: 8d612c895c0ca45488d530dc6d991d48, type: 3}
-  - {fileID: 1808333619816755717, guid: 0d2262bd01547064988a254885f300f3, type: 3}
-  - {fileID: 7381267957016448751, guid: a514af9cf1c8ac146a8be425a2978227, type: 3}
+  - {fileID: 5890892775097563371, guid: 906a7a877d48c2b4293993b6ea0f6fe2, type: 3}
+  - {fileID: 4769493607764635916, guid: 57f6608345907e54eb601da1306cdb6c, type: 3}
+  - {fileID: 8867347169825035832, guid: 07a141fe37ed6704280d9122b7fb1d14, type: 3}
+  - {fileID: 6317700393164037502, guid: 1deab31fe82d9b944ababd2b0277045f, type: 3}
+  gemSpeed: 7
 --- !u!4 &1449456710
 Transform:
   m_ObjectHideFlags: 0
