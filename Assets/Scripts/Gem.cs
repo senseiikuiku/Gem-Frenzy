@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Gem : MonoBehaviour
 {
@@ -18,6 +19,16 @@ public class Gem : MonoBehaviour
     // Gem sẽ hoán đổi vị trí
     private Gem otherGem;
 
+    // Loại gem (có thể mở rộng thêm nếu muốn)
+    public enum GemType { blue, green, red, yellow, purple }
+    public GemType type;
+
+    // Cờ đánh dấu gem đã được match
+    public bool isMatched;
+
+    // Vị trí trước khi di chuyển (dùng để hoán đổi lại nếu không match)
+    public Vector2Int previousPos;
+
     private void Update()
     {
         // Di chuyển gem về vị trí mục tiêu nếu chưa đến
@@ -36,8 +47,12 @@ public class Gem : MonoBehaviour
         if (mousePressed && Input.GetMouseButtonUp(0))
         {
             mousePressed = false;
-            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            CalculateAngle();
+
+            if (board.currentState == Board.BoardState.move)
+            {
+                finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                CalculateAngle();
+            }
         }
     }
 
@@ -51,8 +66,12 @@ public class Gem : MonoBehaviour
     // Phát hiện khi nhấn chuột vào gem
     private void OnMouseDown()
     {
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePressed = true;
+        if (board.currentState == Board.BoardState.move)
+        {
+            firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePressed = true;
+        }
+
     }
 
     // Tính góc vuốt từ vị trí đầu đến cuối
@@ -61,7 +80,6 @@ public class Gem : MonoBehaviour
         // Tính góc bằng Atan2 và chuyển từ radian sang degrees
         swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x);
         swipeAngle = swipeAngle * 180 / Mathf.PI;
-        Debug.Log($"Swipe Angle: {swipeAngle} degrees");
 
         // Chỉ di chuyển nếu vuốt đủ xa (>0.5 unit)
         if (Vector3.Distance(firstTouchPosition, finalTouchPosition) > 0.5f)
@@ -73,6 +91,11 @@ public class Gem : MonoBehaviour
     // Di chuyển gem theo hướng vuốt
     private void MovePieces()
     {
+        otherGem = null;
+
+        // Lưu vị trí hiện tại trước khi di chuyển
+        previousPos = posIndex;
+
         // Vuốt phải: góc -45° đến 45°
         if (swipeAngle < 45 && swipeAngle > -45 && posIndex.x < board.width - 1)
         {
@@ -104,7 +127,43 @@ public class Gem : MonoBehaviour
 
         // Cập nhật vị trí mới trong mảng board
         board.allGems[posIndex.x, posIndex.y] = this;
-        if (otherGem != null)
+        if (otherGem != null) // Đảm bảo otherGem không null trước khi cập nhật
             board.allGems[otherGem.posIndex.x, otherGem.posIndex.y] = otherGem;
+
+        StartCoroutine(checkMoveCo());
+
+    }
+
+    // Coroutine để kiểm tra kết quả sau khi di chuyển
+    public IEnumerator checkMoveCo()
+    {
+        board.currentState = Board.BoardState.wait;
+
+
+        yield return new WaitForSeconds(0.5f);
+
+        board.matchFind.FindAllMatches();
+
+        // Nếu không có match nào được tạo ra, hoán đổi lại vị trí
+        if (otherGem != null)
+        {
+            if (!isMatched && !otherGem.isMatched)
+            {
+                otherGem.posIndex = posIndex; // Đưa otherGem về vị trí mới
+                posIndex = previousPos; // Đưa this gem về vị trí cũ
+
+                // Cập nhật lại mảng board
+                board.allGems[posIndex.x, posIndex.y] = this;
+                board.allGems[otherGem.posIndex.x, otherGem.posIndex.y] = otherGem;
+
+                yield return new WaitForSeconds(.5f);
+                board.currentState = Board.BoardState.move;
+            }
+            else
+            {
+                // Nếu có match, gọi hàm phá hủy gem
+                board.DestroyMatches();
+            }
+        }
     }
 }

@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d184668e3ca69674d8a20a99d14eb1d2, type: 3}
+    - target: {fileID: 4585554260424103326, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.74871796
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585554260424103326, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.9358974
+      objectReference: {fileID: 0}
     - target: {fileID: 5799602449331233285, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.84
@@ -55,6 +63,10 @@ PrefabInstance:
     - target: {fileID: 6555689116412803698, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
       propertyPath: m_Name
       value: Gem-Green Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294442726319950938, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
+      propertyPath: type
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
