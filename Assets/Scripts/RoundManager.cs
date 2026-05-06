@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
@@ -97,7 +99,19 @@ public class RoundManager : MonoBehaviour
                 uiMan.winText.text = "Try Again!";
                 starsEarned = 0;
                 break;
+        }
 
+        for (int i = 0; i < uiMan.btns.Length; i++)
+        {
+            if (uiMan.winStartCount > 0 && i == 0)
+            {
+                uiMan.btns[i].SetActive(true); // Hiển thị nút Next Level nếu có sao
+            }
+            else
+            {
+                uiMan.btns[i].SetActive(false); // Ẩn nút Restart Level nếu không có sao
+            }
+            uiMan.btns[uiMan.btns.Length - 1].SetActive(true); // Luôn hiển thị nút Back to Menu
         }
 
         uiMan.winStartCount = starsEarned;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class UIManager : MonoBehaviour
 
     public GameObject roundOverGreen;
 
+    [Header("Options Button")]
+    public GameObject[] btns;
+
     private void Start()
     {
         roundOverGreen.SetActive(false);
@@ -27,6 +31,7 @@ public class UIManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+
     }
 
     public void SpawnStar(int starCount)

@@ -39,6 +39,31 @@ public class GameManager : MonoBehaviour
         return widthHeightBoard;
     }
 
+    public void GetValueSizeCamera(Camera camera)
+    {
+        int levelNumber = LevelData.Instance.GetCurrentLevel();
+
+        switch (levelNumber)
+        {
+            case int n when (n <= 5):
+                camera.orthographicSize = 4f;
+                camera.transform.position = new Vector3(-0.05f, 3f, -10f);
+                break;
+            case int n when (n > 5 && n <= 8):
+                camera.orthographicSize = 5f;
+                camera.transform.position = new Vector3(-0.5f, 3.5f, -10f);
+                break;
+            case int n when (n > 8 && n <= 10):
+                camera.orthographicSize = 6f;
+                camera.transform.position = new Vector3(-0.05f, 3f, -10f);
+                break;
+            default:
+                camera.orthographicSize = 4f;
+                camera.transform.position = new Vector3(-0.05f, 3f, -10f);
+                break;
+        }
+    }
+
     public float GetValueBombChance()
     {
         int levelNumber = LevelData.Instance.GetCurrentLevel();
