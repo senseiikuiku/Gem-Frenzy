@@ -1280,11 +1280,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98c1c96161b0d94f9f93b66ff1d117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoundManager
-  roundTime: 60
+  roundTime: 10
   currentScore: 0
+  scoreTarget: 5000
   displayScore: 0
   scoreSpeed: 2
-  scoreTarget: 5000
 --- !u!4 &636290516
 Transform:
   m_ObjectHideFlags: 0
@@ -1773,6 +1773,7 @@ MonoBehaviour:
   - {fileID: 4769493607764635916, guid: 57f6608345907e54eb601da1306cdb6c, type: 3}
   - {fileID: 8867347169825035832, guid: 07a141fe37ed6704280d9122b7fb1d14, type: 3}
   - {fileID: 6317700393164037502, guid: 1deab31fe82d9b944ababd2b0277045f, type: 3}
+  - {fileID: 818039071282688373, guid: 228be6eaae1620044bb6e89529661b70, type: 3}
   gemSpeed: 7
   matchFind: {fileID: 0}
   currentState: 1
