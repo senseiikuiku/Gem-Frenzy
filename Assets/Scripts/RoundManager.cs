@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -6,7 +7,6 @@ public class RoundManager : MonoBehaviour
     private UIManager uiMan;
 
     public float roundTime = 60f;
-
     private bool endingRound = false;
 
     public int currentScore = 0;
@@ -14,14 +14,28 @@ public class RoundManager : MonoBehaviour
     public float displayScore;
     public float scoreSpeed = 2f;
 
-
-
-
+    private int starsEarned = 0;
+    private int currentLevel;
 
     private void Awake()
     {
         uiMan = FindAnyObjectByType<UIManager>();
         board = FindAnyObjectByType<Board>();
+
+        // Lấy level hiện tại đang chơi
+        if (LevelData.Instance != null)
+        {
+            currentLevel = LevelData.Instance.GetCurrentLevel();
+        }
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance != null)
+        {
+            roundTime = GameManager.Instance.GetValueRoundTimeLimit();
+            scoreTarget = GameManager.Instance.GetValueScoreTarget();
+        }
     }
 
     void Update()
@@ -61,31 +75,91 @@ public class RoundManager : MonoBehaviour
         {
             case float n when (n >= 1f):
                 uiMan.winText.text = "Perfect!";
-                uiMan.winStartCount = 5;
+                starsEarned = 5;
                 break;
             case float n when (n >= 0.8f):
                 uiMan.winText.text = "Excellent!";
-                uiMan.winStartCount = 4;
+                starsEarned = 4;
                 break;
             case float n when (n >= 0.6f):
                 uiMan.winText.text = "Good!";
-                uiMan.winStartCount = 3;
+                starsEarned = 3;
                 break;
             case float n when (n >= 0.4f):
                 uiMan.winText.text = "Not Bad!";
-                uiMan.winStartCount = 2;
+                starsEarned = 2;
                 break;
             case float n when (n >= 0.2f):
                 uiMan.winText.text = "Needs Improvement!";
-                uiMan.winStartCount = 1;
+                starsEarned = 1;
                 break;
             default:
                 uiMan.winText.text = "Try Again!";
-                uiMan.winStartCount = 0;
+                starsEarned = 0;
                 break;
 
         }
 
+        uiMan.winStartCount = starsEarned;
         uiMan.SpawnStar(uiMan.winStartCount);
+
+        // Lưu kết quả và mở khóa level tiếp theo
+        SaveLevelResult();
+    }
+
+    private void SaveLevelResult()
+    {
+        if (LevelData.Instance != null)
+        {
+            LevelData.Instance.SaveLevelStars(currentLevel, starsEarned);
+        }
+    }
+
+    // Các hàm UI để gọi từ button
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NextLevel()
+    {
+        if (LevelData.Instance != null)
+        {
+            int nextLevel = LevelData.Instance.GetCurrentLevel() + 1;
+
+            // Kiểm tra xem có level tiếp theo không
+            if (nextLevel <= GetTotalLevels())
+            {
+                LevelData.Instance.SetCurrentLevel(nextLevel);
+                SceneManager.LoadScene("Level");
+            }
+            else
+            {
+                // Hết level, quay về menu chọn level
+                BackToLevelSelect();
+            }
+        }
+    }
+
+    public void BackToLevelSelect()
+    {
+        SceneManager.LoadScene("LevelSelect");
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private int GetTotalLevels()
+    {
+        if (LevelManager.Instance != null)
+        {
+            return LevelManager.Instance.levelButtons.Length;
+        }
+        else
+        {
+            return 0; // Trả về 0 nếu không tìm thấy LevelManager
+        }
     }
 }

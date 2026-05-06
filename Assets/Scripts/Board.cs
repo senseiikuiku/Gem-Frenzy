@@ -41,6 +41,13 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.Instance != null)
+        {
+            bombChance = GameManager.Instance.GetValueBombChance();
+            width = GameManager.Instance.GetValueWidthHeightBoard();
+            height = GameManager.Instance.GetValueWidthHeightBoard();
+        }
+
         // Khởi tạo mảng 2D với kích thước width x height
         allGems = new Gem[width, height];
 
