@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System;
 
@@ -7,10 +7,34 @@ public class UIManager : MonoBehaviour
     public TMP_Text timeText;
     public TMP_Text scoreText;
 
+    public TMP_Text winScore;
+    public TMP_Text winText;
+    public GameObject winStartParent;
+    public GameObject winStartPrefab;
+    public int winStartCount = 0;
+
     public GameObject roundOverGreen;
 
     private void Start()
     {
         roundOverGreen.SetActive(false);
+
+        // Xóa các star prefab đã tồn tại trong winStartParent
+        foreach (Transform child in winStartParent.transform)
+        {
+            if (child.gameObject.CompareTag("Star"))
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    public void SpawnStar(int starCount)
+    {
+        for (int i = 0; i < starCount; i++)
+        {
+            GameObject star = Instantiate(winStartPrefab, winStartParent.transform);
+            star.transform.localPosition = Vector3.zero; // Đặt vị trí của star về (0, 0, 0) trong winStartParent
+        }
     }
 }

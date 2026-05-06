@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
@@ -10,8 +10,10 @@ public class RoundManager : MonoBehaviour
     private bool endingRound = false;
 
     public int currentScore = 0;
+    public int scoreTarget = 5000;
     public float displayScore;
     public float scoreSpeed = 2f;
+
 
 
 
@@ -51,5 +53,39 @@ public class RoundManager : MonoBehaviour
     private void WinCheck()
     {
         uiMan.roundOverGreen.SetActive(true);
+        uiMan.winScore.text = currentScore.ToString("0");
+
+        // Tính toán số sao dựa trên tỷ lệ điểm đạt được
+        float scoreRatio = (float)currentScore / scoreTarget;
+        switch (scoreRatio)
+        {
+            case float n when (n >= 1f):
+                uiMan.winText.text = "Perfect!";
+                uiMan.winStartCount = 5;
+                break;
+            case float n when (n >= 0.8f):
+                uiMan.winText.text = "Excellent!";
+                uiMan.winStartCount = 4;
+                break;
+            case float n when (n >= 0.6f):
+                uiMan.winText.text = "Good!";
+                uiMan.winStartCount = 3;
+                break;
+            case float n when (n >= 0.4f):
+                uiMan.winText.text = "Not Bad!";
+                uiMan.winStartCount = 2;
+                break;
+            case float n when (n >= 0.2f):
+                uiMan.winText.text = "Needs Improvement!";
+                uiMan.winStartCount = 1;
+                break;
+            default:
+                uiMan.winText.text = "Try Again!";
+                uiMan.winStartCount = 0;
+                break;
+
+        }
+
+        uiMan.SpawnStar(uiMan.winStartCount);
     }
 }
