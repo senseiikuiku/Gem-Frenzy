@@ -24,9 +24,19 @@ public class Board : MonoBehaviour
     public enum BoardState { wait, move }
     public BoardState currentState = BoardState.move;
 
+    public Gem bomb;
+    public float bombChance = 2f; // Tỷ lệ phần trăm để spawn bomb
+
+    [HideInInspector]
+    public RoundManager roundManager;
+
+    private float bonusMulti; // Biến nhân điểm thưởng, có thể tăng lên khi phá hủy nhiều gem cùng lúc hoặc tạo thành combo
+    public float bonusAmount = .5f; // Số điểm thưởng thêm vào mỗi lần nhân
+
     private void Awake()
     {
         matchFind = FindAnyObjectByType<MatchFinder>();
+        roundManager = FindAnyObjectByType<RoundManager>();
     }
 
     private void Start()
@@ -42,6 +52,11 @@ public class Board : MonoBehaviour
     private void Update()
     {
         //matchFind.FindAllMatches();
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ShuffleBoard();
+        }
     }
 
     // Tạo ô nền và spawn gem cho toàn bộ bảng
@@ -76,6 +91,11 @@ public class Board : MonoBehaviour
     // Tạo gem tại vị trí chỉ định
     private void SpawnGem(Vector2Int pos, Gem gemToSpawn)
     {
+        if (Random.Range(0f, 100f) < bombChance)
+        {
+            gemToSpawn = bomb;
+        }
+
         // Instantiate gem tại vị trí (x, y)
         Gem gem = Instantiate(gemToSpawn, new Vector3(pos.x, pos.y + height, 0f), Quaternion.identity);
         gem.transform.parent = this.transform;
@@ -120,6 +140,8 @@ public class Board : MonoBehaviour
         {
             if (allGems[pos.x, pos.y].isMatched)
             {
+                Instantiate(allGems[pos.x, pos.y].destroyEffect, new Vector2(pos.x, pos.y), Quaternion.identity);
+
                 Destroy(allGems[pos.x, pos.y].gameObject);
                 allGems[pos.x, pos.y] = null;
             }
@@ -133,6 +155,8 @@ public class Board : MonoBehaviour
         {
             if (matchFind.currentMatches[i] != null)
             {
+                ScoreCheck(matchFind.currentMatches[i]);
+
                 DestroyMatchedGemAt(matchFind.currentMatches[i].posIndex);
             }
         }
@@ -175,13 +199,16 @@ public class Board : MonoBehaviour
     private IEnumerator FillBoardCo()
     {
         yield return new WaitForSeconds(.5f);
-        RefillBoard();
+        RefillBoard(); // Điền lại bảng bằng cách spawn gem mới tại những vị trí null
 
         yield return new WaitForSeconds(.5f);
-        matchFind.FindAllMatches();
+        matchFind.FindAllMatches(); // Kiểm tra nếu có match nào mới được tạo thành sau khi điền lại bảng
 
+        // Nếu có match mới thì tiếp tục phá hủy và giảm hàng, nếu không thì cho phép người chơi di chuyển gem
         if (matchFind.currentMatches.Count > 0)
         {
+            bonusMulti++;
+
             yield return new WaitForSeconds(.5f);
             DestroyMatches();
         }
@@ -189,6 +216,8 @@ public class Board : MonoBehaviour
         {
             yield return new WaitForSeconds(.5f);
             currentState = BoardState.move;
+
+            bonusMulti = 0;
         }
     }
 
@@ -235,4 +264,62 @@ public class Board : MonoBehaviour
             Destroy(gem.gameObject);
         }
     }
+
+    // Hàm xử lý xáo trộn lại bảng khi người chơi nhấn phím S
+    public void ShuffleBoard()
+    {
+        if (currentState != BoardState.wait)
+        {
+            currentState = BoardState.wait;
+
+            List<Gem> gemsFromBoard = new List<Gem>();
+
+            // Lấy tất cả gem hiện có trên bảng và lưu vào danh sách gemsFromBoard
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (allGems[x, y] != null)
+                    {
+                        gemsFromBoard.Add(allGems[x, y]);
+                        allGems[x, y] = null;
+                    }
+                }
+            }
+
+            // Điền lại bảng bằng cách random gem từ danh sách gemsFromBoard và spawn tại vị trí mới
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    int gemToUse = Random.Range(0, gemsFromBoard.Count); // Random 1 gem từ danh sách gemsFromBoard để spawn
+
+                    int iterations = 0;
+                    while (MatchesAt(new Vector2Int(x, y), gemsFromBoard[gemToUse]) && iterations < 100 && gemsFromBoard.Count > 1)
+                    {
+                        gemToUse = Random.Range(0, gemsFromBoard.Count);
+                        iterations++;
+                    }
+                    gemsFromBoard[gemToUse].SetupGem(new Vector2Int(x, y), this); // Cập nhật vị trí và board cho gem được chọn
+                    allGems[x, y] = gemsFromBoard[gemToUse]; // Lưu gem vào mảng 2D tại vị trí mới
+                    gemsFromBoard.RemoveAt(gemToUse); // Loại bỏ gem đã được chọn khỏi danh sách gemsFromBoard
+                }
+            }
+        }
+
+        StartCoroutine(FillBoardCo()); // Sau khi xáo trộn xong thì điền lại bảng và kiểm tra nếu có match nào không
+    }
+
+    public void ScoreCheck(Gem gemToCheck)
+    {
+        roundManager.currentScore += gemToCheck.scoreValue;
+
+        // Nếu bonusMulti > 0 nghĩa là đã phá hủy được nhiều gem cùng lúc hoặc tạo thành combo, thì sẽ cộng thêm điểm thưởng vào điểm hiện tại
+        if (bonusMulti > 0)
+        {
+            float bonusToAdd = gemToCheck.scoreValue * bonusAmount * bonusMulti;
+            roundManager.currentScore += Mathf.RoundToInt(bonusToAdd);
+        }
+    }
+
 }

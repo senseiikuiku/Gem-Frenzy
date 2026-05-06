@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8592605607291928052
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.16470586
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.2774379
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.99215686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.minColor.b
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.minColor.g
+      value: 0.06494747
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.06448022
+      objectReference: {fileID: 0}
+    - target: {fileID: 1097410034085610423, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.40904
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.89463
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4896033620822821692, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4943310732232327983, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 6238081029476415210, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}
+      propertyPath: m_Name
+      value: Gem Burst - Bomb Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}

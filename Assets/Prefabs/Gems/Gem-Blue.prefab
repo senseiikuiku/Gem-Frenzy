@@ -153,3 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gem
   posIndex: {x: 0, y: 0}
   board: {fileID: 0}
+  type: 0
+  isMatched: 0
+  previousPos: {x: 0, y: 0}
+  destroyEffect: {fileID: 6238081029476415210, guid: 60eb5ea303fc33f4d9c060125df6e6e8, type: 3}

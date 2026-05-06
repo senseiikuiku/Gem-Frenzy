@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8294442726319950938, guid: de3e9b9434e70014bb9328ef8bb4b9e6, type: 3}
+      propertyPath: destroyEffect
+      value: 
+      objectReference: {fileID: 356993927371123087, guid: 09144d87f7aa2bd42a09e4663a15389b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

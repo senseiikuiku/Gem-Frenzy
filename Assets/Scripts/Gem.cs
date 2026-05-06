@@ -20,7 +20,7 @@ public class Gem : MonoBehaviour
     private Gem otherGem;
 
     // Loại gem (có thể mở rộng thêm nếu muốn)
-    public enum GemType { blue, green, red, yellow, purple }
+    public enum GemType { blue, green, red, yellow, purple, bomb }
     public GemType type;
 
     // Cờ đánh dấu gem đã được match
@@ -28,6 +28,12 @@ public class Gem : MonoBehaviour
 
     // Vị trí trước khi di chuyển (dùng để hoán đổi lại nếu không match)
     public Vector2Int previousPos;
+
+    public GameObject destroyEffect; // Hiệu ứng khi gem bị phá hủy
+
+    public int blastSize = 2; // Kích thước vụ nổ nếu là bomb
+
+    public int scoreValue = 10; // Điểm thưởng khi gem bị phá hủy
 
     private void Update()
     {
@@ -48,7 +54,7 @@ public class Gem : MonoBehaviour
         {
             mousePressed = false;
 
-            if (board.currentState == Board.BoardState.move)
+            if (board.currentState == Board.BoardState.move && board.roundManager.roundTime > 0)
             {
                 finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 CalculateAngle();
@@ -66,7 +72,7 @@ public class Gem : MonoBehaviour
     // Phát hiện khi nhấn chuột vào gem
     private void OnMouseDown()
     {
-        if (board.currentState == Board.BoardState.move)
+        if (board.currentState == Board.BoardState.move && board.roundManager.roundTime > 0)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePressed = true;
