@@ -33,10 +33,14 @@ public class Board : MonoBehaviour
     private float bonusMulti; // Biến nhân điểm thưởng, có thể tăng lên khi phá hủy nhiều gem cùng lúc hoặc tạo thành combo
     public float bonusAmount = .5f; // Số điểm thưởng thêm vào mỗi lần nhân
 
+    private BoardLayout boardLayout;
+    private Gem[,] layoutStore;
+
     private void Awake()
     {
         matchFind = FindAnyObjectByType<MatchFinder>();
         roundManager = FindAnyObjectByType<RoundManager>();
+        boardLayout = FindAnyObjectByType<BoardLayout>();
     }
 
     private void Start()
@@ -50,6 +54,8 @@ public class Board : MonoBehaviour
 
         // Khởi tạo mảng 2D với kích thước width x height
         allGems = new Gem[width, height];
+
+        layoutStore = new Gem[width, height];
 
         // Tạo bảng game
         Setup();
@@ -69,6 +75,11 @@ public class Board : MonoBehaviour
     // Tạo ô nền và spawn gem cho toàn bộ bảng
     private void Setup()
     {
+        if (boardLayout != null)
+        {
+            layoutStore = boardLayout.GetLayout();
+        }
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -79,18 +90,30 @@ public class Board : MonoBehaviour
                 bgTile.transform.parent = this.transform;
                 bgTile.name = $"BGTile_{x},{y}";
 
-                // Random 1 loại gem và spawn tại vị trí này
-                int gemToUse = Random.Range(0, gems.Length);
-
-                int iterations = 0;
-                // Kiểm tra nếu spawn gem này sẽ tạo thành 3 gem cùng loại liên tiếp, nếu có thì random lại
-                while (MatchesAt(new Vector2Int(x, y), gems[gemToUse]) && iterations < 100)
+                // Kiểm tra bounds trước khi truy cập mảng
+                if (layoutStore != null &&
+                    x < layoutStore.GetLength(0) &&
+                    y < layoutStore.GetLength(1) &&
+                    layoutStore[x, y] != null)
                 {
-                    gemToUse = Random.Range(0, gems.Length);
-                    iterations++;
+                    SpawnGem(new Vector2Int(x, y), layoutStore[x, y]);
                 }
+                else
+                {
 
-                SpawnGem(new Vector2Int(x, y), gems[gemToUse]);
+                    // Random 1 loại gem và spawn tại vị trí này
+                    int gemToUse = Random.Range(0, gems.Length);
+
+                    int iterations = 0;
+                    // Kiểm tra nếu spawn gem này sẽ tạo thành 3 gem cùng loại liên tiếp, nếu có thì random lại
+                    while (MatchesAt(new Vector2Int(x, y), gems[gemToUse]) && iterations < 100)
+                    {
+                        gemToUse = Random.Range(0, gems.Length);
+                        iterations++;
+                    }
+
+                    SpawnGem(new Vector2Int(x, y), gems[gemToUse]);
+                }
             }
         }
     }
@@ -147,6 +170,19 @@ public class Board : MonoBehaviour
         {
             if (allGems[pos.x, pos.y].isMatched)
             {
+                if (allGems[pos.x, pos.y].type == Gem.GemType.bomb)
+                {
+                    AudioManager.Instance.PlayExplosionSound();
+                }
+                else if (allGems[pos.x, pos.y].type == Gem.GemType.stone)
+                {
+                    AudioManager.Instance.PlayStoneBreakSound();
+                }
+                else
+                {
+                    AudioManager.Instance.PlayGemBreakSound();
+                }
+
                 Instantiate(allGems[pos.x, pos.y].destroyEffect, new Vector2(pos.x, pos.y), Quaternion.identity);
 
                 Destroy(allGems[pos.x, pos.y].gameObject);
@@ -315,6 +351,11 @@ public class Board : MonoBehaviour
         }
 
         StartCoroutine(FillBoardCo()); // Sau khi xáo trộn xong thì điền lại bảng và kiểm tra nếu có match nào không
+    }
+
+    public void OnClickShuffleBoard()
+    {
+        ShuffleBoard();
     }
 
     public void ScoreCheck(Gem gemToCheck)

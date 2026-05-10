@@ -63,6 +63,7 @@ public class EditSizeCamera : MonoBehaviour
                 break;
             case 6f:
                 UpdateSizeSpriteRenderer(10f);
+                UpdatePositionBlock_BG(new Vector2(1.5f, 1.5f));
                 break;
             default:
                 UpdateSizeSpriteRenderer(7f);

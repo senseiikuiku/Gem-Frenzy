@@ -33,7 +33,7 @@ public class MatchFinder : MonoBehaviour
                         Gem rightGem = board.allGems[x + 1, y];
                         if (leftGem != null && rightGem != null)
                         {
-                            if (leftGem.type == currentGem.type && rightGem.type == currentGem.type)
+                            if (leftGem.type == currentGem.type && rightGem.type == currentGem.type && currentGem.type != Gem.GemType.stone)
                             {
                                 leftGem.isMatched = true;
                                 rightGem.isMatched = true;
@@ -53,7 +53,7 @@ public class MatchFinder : MonoBehaviour
                         Gem downGem = board.allGems[x, y - 1];
                         if (upGem != null && downGem != null)
                         {
-                            if (upGem.type == currentGem.type && downGem.type == currentGem.type)
+                            if (upGem.type == currentGem.type && downGem.type == currentGem.type && currentGem.type != Gem.GemType.stone)
                             {
                                 upGem.isMatched = true;
                                 downGem.isMatched = true;

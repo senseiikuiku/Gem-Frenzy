@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 break;
             case int n when (n > 8 && n <= 10):
                 camera.orthographicSize = 6f;
-                camera.transform.position = new Vector3(-0.05f, 3f, -10f);
+                camera.transform.position = new Vector3(-0.05f, 4.5f, -10f);
                 break;
             default:
                 camera.orthographicSize = 4f;

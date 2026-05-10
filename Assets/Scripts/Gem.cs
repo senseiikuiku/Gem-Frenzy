@@ -20,7 +20,7 @@ public class Gem : MonoBehaviour
     private Gem otherGem;
 
     // Loại gem (có thể mở rộng thêm nếu muốn)
-    public enum GemType { blue, green, red, yellow, purple, bomb }
+    public enum GemType { blue, green, red, yellow, purple, bomb, stone }
     public GemType type;
 
     // Cờ đánh dấu gem đã được match

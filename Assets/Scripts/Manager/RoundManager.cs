@@ -38,6 +38,8 @@ public class RoundManager : MonoBehaviour
             roundTime = GameManager.Instance.GetValueRoundTimeLimit();
             scoreTarget = GameManager.Instance.GetValueScoreTarget();
         }
+
+        uiMan.targetText.text = scoreTarget.ToString("0");
     }
 
     void Update()
@@ -103,7 +105,7 @@ public class RoundManager : MonoBehaviour
 
         for (int i = 0; i < uiMan.btns.Length; i++)
         {
-            if (uiMan.winStartCount > 0 && i == 0)
+            if (starsEarned > 0 && i == 0)
             {
                 uiMan.btns[i].SetActive(true); // Hiển thị nút Next Level nếu có sao
             }
@@ -112,6 +114,11 @@ public class RoundManager : MonoBehaviour
                 uiMan.btns[i].SetActive(false); // Ẩn nút Restart Level nếu không có sao
             }
             uiMan.btns[uiMan.btns.Length - 1].SetActive(true); // Luôn hiển thị nút Back to Menu
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayLevelCompleteSound();
         }
 
         uiMan.winStartCount = starsEarned;

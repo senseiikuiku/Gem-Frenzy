@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public TMP_Text timeText;
     public TMP_Text scoreText;
+    public TMP_Text targetText;
 
     public TMP_Text winScore;
     public TMP_Text winText;
@@ -14,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject winStartPrefab;
     public int winStartCount = 0;
 
+    public GameObject pausePanel;
     public GameObject roundOverGreen;
 
     [Header("Options Button")]
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        pausePanel.SetActive(false);
         roundOverGreen.SetActive(false);
 
         // Xóa các star prefab đã tồn tại trong winStartParent
@@ -41,5 +44,25 @@ public class UIManager : MonoBehaviour
             GameObject star = Instantiate(winStartPrefab, winStartParent.transform);
             star.transform.localPosition = Vector3.zero; // Đặt vị trí của star về (0, 0, 0) trong winStartParent
         }
+    }
+
+    public void TogglePausePanel()
+    {
+        pausePanel.SetActive(!pausePanel.activeSelf);
+
+        if (pausePanel.activeSelf)
+        {
+            Time.timeScale = 0f; // Tạm dừng game
+        }
+        else
+        {
+            Time.timeScale = 1f; // Tiếp tục game
+        }
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        Time.timeScale = 1f; // Đảm bảo game không bị tạm dừng khi chuyển scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 }
